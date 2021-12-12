@@ -93,8 +93,7 @@ sudo apt install brave-browser
 
 
 
-
-
+# ******** INSTALL THEMES, ICONS, WALLPAPER ********
 
 OUTPUT_DIRS=(
     "~/.themes"
@@ -109,9 +108,11 @@ do
     fi
 done
 
+# unzip tar.xz files
+echo "Unzipping the files..."
+tar -xvf themes/*.tar.xz -C ~/.themes
+tar -xvf icons/*.tar.xz -C ~/.icons
 
-unzip ~/$(OS_FLAVOR)/themes/* -d ~/.themes
-unzip ~/$(OS_FLAVOR)/icons/* -d ~/.icons
 sudo mv ~/$(OS_FLAVOR)/backgrounds/* /usr/share/backgrounds/
 
 
@@ -128,6 +129,7 @@ gsettings set org.gnome.desktop.interface clock-show-weekday 'true'
 
 gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/$(WALLPAPER).jpg'
 gsettings get org.gnome.desktop.screensaver picture-uri 'file:///usr/share/backgrounds/$(SCREENSAVER).jpg'
+
 
 
 
