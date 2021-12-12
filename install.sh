@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # ********** Configurations **********
 OS_FLAVOR="orbuntu"
 USER="$(whoami)"
@@ -12,20 +11,19 @@ SCREENSAVER="firewatch-wallpaper.jpg"
 ICON_THEME="Papirus"
 # *********** END Configurations ***********
 
+
 # ********** Download the files **********
 echo "Downloading the files..."
 wget https://github.com/ohidurbappy/orbuntu/archive/refs/heads/main.zip -O orbuntu.zip
-ZIP_OUTPUT_DIR=~/$(OS_FLAVOR)
+ZIP_OUTPUT_DIR="$HOME/$OS_FLAVOR"
 sudo unzip orbuntu.zip -d $ZIP_OUTPUT_DIR
+sudo yes | cp -r $ZIP_OUTPUT_DIR/orbuntu-main/* $ZIP_OUTPUT_DIR
 rm orbuntu.zip
 # *********** END Download the files ***********
 
 
-# git clone https://github.com/ohidurbappy/orbuntu.git ~/$(OS_FLAVOR)
-# sudo chmod +x ~/$(OS_FLAVOR)/install.sh
-
 # change directory to the folder
-cd ZIP_OUTPUT_DIR
+cd $ZIP_OUTPUT_DIR
 
 # include the helper functions from 'src/helpers.sh'
 source src/helpers.sh
@@ -33,9 +31,6 @@ source src/helpers.sh
 
 # show welcome message
 cat 'src/welcome.txt'
-
-# wget a zip file from the github repo
-
 
 box_out "Welcome to the installation script for ORBUNTU" "It will install the required packages"
 
@@ -56,7 +51,7 @@ echo -e "\e[0m"
 # ******** INSTALLING REQUIRED PACKAGES ********
 echo "Installing packages..."
 sudo apt update && sudo apt upgrade -y
-sudo apt install git gnome-shell-extensions chrome-gnome-shell gnome-tweak-tool -y
+sudo apt install git gnome-shell-extensions chrome-gnome-shell gnome-tweaks -y
 
 
 # ******** FIREFOX UNINSTALL ********
@@ -97,8 +92,8 @@ sudo apt install brave-browser
 # ******** INSTALL THEMES, ICONS, WALLPAPER ********
 
 OUTPUT_DIRS=(
-    "~/.themes"
-    "~/.icons"
+    "$HOME/.themes"
+    "$HOME/.icons"
 )
 
 # create dirs if not exist
@@ -109,27 +104,26 @@ do
     fi
 done
 
-# unzip tar.xz files
+
 echo "Unzipping the files..."
-tar -xvf themes/*.tar.xz -C ~/.themes
-tar -xvf icons/*.tar.xz -C ~/.icons
+tar -xvf themes/* -C ~/.themes
+tar -xvf icons/* -C ~/.icons
 
-sudo mv ~/$(OS_FLAVOR)/backgrounds/* /usr/share/backgrounds/
+mv "$HOME/$OS_FLAVOR/backgrounds"/* /usr/share/backgrounds/
 
+echo_gray "Installing the themes..."
 
 # ********** GNOME TWEAK SETTINGS ************
 gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
-gsettings set org.gnome.desktop.interface gtk-theme "$(GTK_THEME)"
-gsettings set org.gnome.desktop.wm.preferences theme "$(SHELL_THEME)"
-gsettings set org.gnome.desktop.interface icon-theme "$(ICON_THEME)"
-gsettings set org.gnome.desktop.interface font-name "Ubuntu Mono 11"
+gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
+gsettings set org.gnome.desktop.wm.preferences theme "$SHELL_THEME"
+gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
+# gsettings set org.gnome.desktop.interface font-name "Ubuntu Mono 11"
 # gsettings set org.gnome.mutter center-new-windows 'true'
 gsettings set org.gnome.desktop.interface cursor-theme 'Yaru'
 gsettings set org.gnome.desktop.interface clock-show-date 'true'
 gsettings set org.gnome.desktop.interface clock-show-weekday 'true'
-
-gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/$(WALLPAPER).jpg'
-gsettings get org.gnome.desktop.screensaver picture-uri 'file:///usr/share/backgrounds/$(SCREENSAVER).jpg'
+gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/$WALLPAPER"
 
 
 
@@ -144,14 +138,15 @@ timedatectl set-local-rtc 1 --adjust-system-clock
 
 # ASK FOR USERNAME AND EMAIL
 echo_gray "Configuring git..."
-echo "Enter your username:";read
-git config --global user.name "$REPLY"
-echo "Enter your email:";read
-git config --global user.email "$REPLY"
+read -p "Enter your username: " USERNAME
+read -p "Enter your email: " EMAIL
+git config --global user.name "$USERNAME"
+git config --global user.email "$EMAIL"
+
 # ********** END CONFIGURE GIT ************
 
 
 
 echo_green "Installation complete!"
-read -p "Press [Enter] to continue..."
+read -p "Press any key to exit..."
 
