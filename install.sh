@@ -15,7 +15,8 @@ ICON_THEME="Papirus"
 # ********** Download the files **********
 echo "Downloading the files..."
 wget https://github.com/ohidurbappy/orbuntu/archive/refs/heads/main.zip -O orbuntu.zip
-sudo unzip orbuntu.zip -d ~/$(OS_FLAVOR)
+ZIP_OUTPUT_DIR=~/$(OS_FLAVOR)
+sudo unzip orbuntu.zip -d $ZIP_OUTPUT_DIR
 rm orbuntu.zip
 # *********** END Download the files ***********
 
@@ -24,7 +25,7 @@ rm orbuntu.zip
 # sudo chmod +x ~/$(OS_FLAVOR)/install.sh
 
 # change directory to the folder
-cd ~/$(OS_FLAVOR)
+cd ZIP_OUTPUT_DIR
 
 # include the helper functions from 'src/helpers.sh'
 source src/helpers.sh
