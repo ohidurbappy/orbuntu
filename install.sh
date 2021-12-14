@@ -137,7 +137,6 @@ gsettings set org.gnome.desktop.interface clock-show-weekday 'true'
 gsettings set org.gnome.desktop.background picture-uri "$wallpaper_file"
 
 
-exit 1
 
 
 # ******** FIREFOX UNINSTALL ********
