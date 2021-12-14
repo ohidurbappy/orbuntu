@@ -14,7 +14,7 @@ make ubuntu look a lot better.
 ## Installation
 
 ```bash
-sudo curl -fsSL https://raw.githubusercontent.com/ohidurbappy/orbuntu/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/ohidurbappy/orbuntu/main/install.sh | sh
 ```
 
 ## Description
